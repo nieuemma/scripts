@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Function to ask the user for their Linux distribution
+ask_user_and_run_commands() {
+    echo "Please enter the name of your Linux distribution (e.g., Ubuntu, Arch):"
+    read distro_name
+
+    # Convert the input to lowercase for easier matching
+    distro_name=$(echo "$distro_name" | tr '[:upper:]' '[:lower:]')
+
+    # Check the input and run commands accordingly
+    case "$distro_name" in
+        ubuntu)
+            echo "You are using Ubuntu. Running Ubuntu-specific commands..."
+            # Example Ubuntu-specific commands
+            echo "Updating package list..."
+            sudo apt update
+            echo "Installing curl..."
+            sudo apt install -y curl
+            ;;
+        arch)
+            echo "You are using Arch. Running Arch-specific commands..."
+            # Example Arch-specific commands
+            echo "Updating package list..."
+            sudo pacman -Syu
+            echo "Installing curl..."
+            sudo pacman -S --noconfirm curl
+            ;;
+        *)
+            echo "Unsupported distribution: $distro_name"
+            echo "Please add support for this distribution in the script."
+            ;;
+    esac
+}
+
+# Run the function
+ask_user_and_run_commands
