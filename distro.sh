@@ -41,7 +41,7 @@ distro_commands() {
         *"Arch Linux"*)
             sudo pacman -S --noconfirm --needed gnome-shell nautilus epiphany gnome-console gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm networkmanager nm-connection-editor baobab gnome-disk utilitx gnome-text-editor gnome-system-monitor loupe totem decibels guake neovim btrfs-progs timeshift
             [ -f /bin/btrfs-list ] && echo "btrfs-list is already installed." || (git clone https://aur.archlinux.org/btrfs-list.git && cd btrfs-list && makepkg -s --install --noconfirm *.zst && cd .. && rm -rf btrfs-list)
-            [ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || cd ~/.config && git clone https://github.com/nieuemma/nvim.git
+            [ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || (cd ~/.config && git clone https://github.com/nieuemma/nvim.git)
             ;;
         *)
             echo "No specific commands for this distribution."
