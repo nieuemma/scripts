@@ -25,7 +25,7 @@ distro_commands() {
             sudo apt install -y gnome-shell nautilus epiphany-browser gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm3 network-manager network-manager-gnome btrfs-tools
             ;;
         *Fedora*)
-            sudo dnf install curl
+            sudo dnf install -y gnome-shell nautilus epiphany gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm NetworkManager network-manager-applet btrfs-progs
             ;;
         *CentOS*)
             sudo yum install -y curl
