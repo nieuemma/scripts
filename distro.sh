@@ -44,11 +44,11 @@ distro_commands() {
             [ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || (cd ~/.config && git clone https://github.com/nieuemma/nvim.git)
             ;;
         *)
-            echo "No specific commands for this distribution."
+            echo "No commands for this distribution."
             ;;
     esac
 }
 
 distro_detect
 distro_commands
-rm -f $0
+rm $0
