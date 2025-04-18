@@ -16,7 +16,6 @@ distro_detect() {
         echo "Could not detect the Linux distribution. Unknown or unsupported system."
         distro="Unknown"
     fi
-        echo "You are using $distro"
 }
 
 # Function to run commands based on the distro
@@ -41,6 +40,7 @@ distro_commands() {
             ;;
         *Arch Linux*)
             sudo pacman -S --noconfirm curl
+            ;;
         *)
             echo "No specific commands for this distribution."
             ;;
