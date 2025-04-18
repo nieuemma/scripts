@@ -21,21 +21,13 @@ distro_detect() {
 # Function to run commands based on the distro
 distro_commands() {
     case "$distro" in
-        *Ubuntu*)
-            echo "Running commands for Ubuntu..."
-            # Add your Ubuntu-specific commands here
-            sudo apt install curl
-            ;;
-        *Debian*)
-            echo "Running commands for Debian..."
-            sudo apt install curl
+        *Debian*|*Ubuntu*)
+            sudo apt install -y gnome-shell nautilus epiphany-browser gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm3 network-manager network-manager-gnome btrfs-tools
             ;;
         *Fedora*)
-            echo "Running commands for Fedora..."
             sudo dnf install curl
             ;;
         *CentOS*)
-            echo "Running commands for CentOS..."
             sudo yum install -y curl
             ;;
         *"Arch Linux"*)
