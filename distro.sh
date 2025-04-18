@@ -23,12 +23,15 @@ distro_commands() {
     case "$distro" in
         *Debian*|*Ubuntu*)
             sudo apt install -y gnome-shell nautilus epiphany-browser gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm3 network-manager network-manager-gnome btrfs-tools
+            [ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || (cd ~/.config && git clone https://github.com/nieuemma/nvim.git)
             ;;
         *Fedora*)
             sudo dnf install -y gnome-shell nautilus epiphany gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm NetworkManager network-manager-applet btrfs-progs
+            [ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || (cd ~/.config && git clone https://github.com/nieuemma/nvim.git)
             ;;
         *CentOS*)
             sudo yum install -y gnome-shell nautilus epiphany gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm NetworkManager network-manager-applet btrfs-progs
+            [ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || (cd ~/.config && git clone https://github.com/nieuemma/nvim.git)
             ;;
         *"Arch Linux"*)
             sudo pacman -S --noconfirm --needed gnome-shell nautilus epiphany gnome-console gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm networkmanager nm-connection-editor baobab gnome-disk-utility gnome-text-editor gnome-system-monitor loupe totem decibels guake neovim btrfs-progs timeshift
