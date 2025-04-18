@@ -28,7 +28,7 @@ distro_commands() {
             sudo dnf install -y gnome-shell nautilus epiphany gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm NetworkManager network-manager-applet btrfs-progs
             ;;
         *CentOS*)
-            sudo yum install -y curl
+            sudo yum install -y gnome-shell nautilus epiphany gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm NetworkManager network-manager-applet btrfs-progs
             ;;
         *"Arch Linux"*)
             sudo pacman -S --noconfirm --needed gnome-shell nautilus epiphany gnome-console gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm networkmanager nm-connection-editor baobab gnome-disk-utility gnome-text-editor gnome-system-monitor loupe totem decibels guake neovim btrfs-progs timeshift
