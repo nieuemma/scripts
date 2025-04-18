@@ -38,7 +38,7 @@ distro_commands() {
             echo "Running commands for CentOS..."
             sudo yum install -y curl
             ;;
-        *Arch Linux*)
+        *"Arch Linux"*)
             sudo pacman -S --noconfirm curl
             ;;
         *)
