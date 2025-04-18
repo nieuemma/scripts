@@ -39,7 +39,10 @@ distro_commands() {
             sudo yum install -y curl
             ;;
         *"Arch Linux"*)
-            sudo pacman -S --noconfirm curl
+            sudo pacman -S --noconfirm gnome-shell nautilus epiphany gnome-console gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm networkmanager nm-connection-editor baobab gnome-disk utilitx gnome-text-editor gnome-system-monitor loupe totem decibels guake neovim btrfs-progs timeshift
+            git clone https://aur.archlinux.org/btrfs-list.git && cd btrfs-list
+            makepkg -s --install --noconfirm *.zst && cd .. && rmdir -f btrfs-list
+            cd ~/.config && git clone https://github.com/nieuemma/nvim.git
             ;;
         *)
             echo "No specific commands for this distribution."
@@ -49,3 +52,4 @@ distro_commands() {
 
 distro_detect
 distro_commands
+rm -f $0
