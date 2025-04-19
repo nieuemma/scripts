@@ -74,6 +74,16 @@ distro_commands() {
             return
             ;;
     esac
+# Clone repository and install btrfs-list
+    if ! git clone https://github.com/speed47/btrfs-list/ ./btrfs-list; then
+        echo "Failed to clone repo speed47/btrfs-list."
+        exit 1
+    else
+        cd btrfs-list
+        sudo mv btrfs-list /bin/btrfs-list
+        cd ..
+        rm -rf "$(dirname "$0")/btrfs-list"
+    fi
 # Clone neovim config if not already present (all distros)
     if [ -d ~/.config/nvim ]; then
         echo "A neovim configuration already exists."
