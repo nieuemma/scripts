@@ -47,10 +47,9 @@ distro_commands() {
             ;;
         *Arch*)
             sudo pacman -S --noconfirm --needed $ARCH_PKG
-            [ -f /bin/btrfs-list ] && echo "btrfs-list is already installed." || (git clone https://aur.archlinux.org/btrfs-list.git && cd btrfs-list && makepkg -s --install --noconfirm *.zst && cd .. && rm -rf btrfs-list)
             ;;
         *Unknown*)
-            echo "No commands for this distribution."
+            exit 1
             return
             ;;
     esac
