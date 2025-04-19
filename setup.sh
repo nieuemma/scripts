@@ -91,6 +91,7 @@ nvim_config_install() {
 }
 # Execute the script
 output_log
+conf_load
 check_tool git sudo awk tee
 distro_detect
 pkg_install
