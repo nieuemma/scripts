@@ -12,9 +12,11 @@ fi
 
 # Set error handling
 handle_error() {
-    echo "Error: $1"
+    echo "Error: $1" >&2
+    echo "Check the setup.log for more details." >&2
     exit 1
 }
+
 PKG_FAIL="Failed to install packages."
 
 # Check that required tools are installed
