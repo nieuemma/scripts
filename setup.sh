@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Log script output to a file
-exec > "$(dirname "$0")/distro.log" 2>&1
+exec > "$(dirname "$0")/setup.log" 2>&1
 
 # Load configuration file
-if [ -f "$(dirname "$0")/distro.conf" ]; then
-    source "$(dirname "$0")/distro.conf"
+if [ -f "$(dirname "$0")/setup.conf" ]; then
+    source "$(dirname "$0")/setup.conf"
 else
     echo "Configuration file not found."
 fi
