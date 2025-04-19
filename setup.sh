@@ -7,7 +7,7 @@ exec > "$(dirname "$0")/setup.log" 2>&1
 if [ -f "$(dirname "$0")/setup.conf" ]; then
     source "$(dirname "$0")/setup.conf"
 else
-    echo "Configuration file not found."
+    handle_error "Configuration file not found."
 fi
 
 # Set error handling
@@ -21,8 +21,7 @@ PKG_FAIL="Failed to install packages."
 check_tool() {
     for tool in "$@"; do
         if ! command -v "$tool" &> /dev/null; then
-            echo "Error: $tool is not installed or not in PATH."
-            exit 1
+            handle_error "$tool is not installed or not in PATH."
         fi
     done
 }
