@@ -1,13 +1,18 @@
 #!/bin/bash
 
 # Log script output to a file
-exec > "$(dirname "$0")/output.log" 2>&1
+exec > "$(dirname "$0")/distro.log" 2>&1
 
-# Define package variables
-DEB_PKG="gnome-shell nautilus epiphany-browser gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm3 network-manager network-manager-gnome btrfs-progs neovim"
-RHL_PKG="gnome-shell nautilus epiphany gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm NetworkManager network-manager-applet btrfs-progs neovim"
-ARCH_PKG="gnome-shell nautilus epiphany gnome-console gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm networkmanager nm-connection-editor btrfs-progs neovim"
+# Load configuration file
+if [ -f "$(dirname "$0")/distro.conf" ]; then
+    source "$(dirname "$0")/distro.conf"
+else
+    echo "Configuration file not found."
+fi
+
+# Set package fail message
 PKG_FAIL="Failed to install packages."
+
 # Check that required tools are installed
 check_commands() {
     for tool in "$@"; do
