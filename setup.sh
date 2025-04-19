@@ -5,15 +5,18 @@ output_log() {
 }
 # Set error handling
 handle_error() {
+PKG_FAIL="Failed to install packages."
     echo "Error: $1" >&2
     echo "Check the setup.log for more details." >&2
     exit 1 
 }
-PKG_FAIL="Failed to install packages."
+
 # Load configuration file
-conf_source() { 
-    if [ -f "$(dirname "$0")/setup.conf" ]; then
-        source "$(dirname "$0")/setup.conf"
+conf_load() { 
+CONF_FILE="$(dirname "$0")/setup.conf"
+    echo "Loading $CONF_FILE"
+    if [ -f "$CONF_FILE" ]; then
+        . "$CONF_FILE"
     else
         handle_error "Configuration file not found."
     fi
@@ -21,6 +24,7 @@ conf_source() {
 # Check that required tools are installed
 check_tool() {
     for tool in "$@"; do
+        echo "Checking for $tool"
         if ! command -v "$tool" &> /dev/null; then
             handle_error "$tool is not installed or not in PATH."
         fi
@@ -28,6 +32,7 @@ check_tool() {
 }
 # Detect the active Linux distro
 distro_detect() {
+    echo "Detecting active Linux distribution"
     if [ -f /etc/os-release ]; then
         . /etc/os-release
         distro=$NAME
@@ -45,6 +50,7 @@ distro_detect() {
 }
 # Install packages for each distro
 pkg_install() {
+    echo "Installing packages"
     case "$distro" in
         *Debian*|*Ubuntu*) sudo apt install -y "$DEB_PKG" || handle_error "$PKG_FAIL" 
         ;;
@@ -58,6 +64,7 @@ pkg_install() {
 }
 # Clone repository and install btrfs-list
 btrfs_list_install() {
+    echo "Installing btrfs-list"
     if [ -f /bin/btrfs-list ]; then
         handle_error "btrfs-list is already installed."
     else 
@@ -73,6 +80,7 @@ btrfs_list_install() {
 }
 # Clone neovim config if not already present (all distros)
 nvim_config_install() {
+    echo "Cloning neovim configuration"
     if [ -d ~/.config/nvim ]; then
         handle_error "A neovim configuration already exists."
     else
@@ -82,6 +90,7 @@ nvim_config_install() {
     fi
 }
 # Execute the script
+output_log
 check_tool git sudo awk tee
 distro_detect
 pkg_install
