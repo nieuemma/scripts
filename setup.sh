@@ -18,7 +18,7 @@ handle_error() {
 PKG_FAIL="Failed to install packages."
 
 # Check that required tools are installed
-check_commands() {
+check_tool() {
     for tool in "$@"; do
         if ! command -v "$tool" &> /dev/null; then
             echo "Error: $tool is not installed or not in PATH."
@@ -44,26 +44,19 @@ distro_detect() {
     fi
     echo "Detected Linux distribution: $distro"
 }
-# Functions to install packages for each distro
-debpkg_install() {
-    sudo apt install -y $DEB_PKG || handle_error $PKG_FAIL
-}
-fedpkg_install() {
-    sudo dnf install -y $RHL_PKG || handle_error $PKG_FAIL
-}
-centpkg_install() {
-    sudo yum install -y $RHL_PKG || handle_error $PKG_FAIL
-}
-archpkg_install() {
-    sudo pacman -S --noconfirm --needed $ARCH_PKG || handle_error $PKG_FAIL
-}
-distro_commands() {
+# Install packages for each distro
+pkg_install() {
     case "$distro" in
-        *Debian*|*Ubuntu*) debpkg_install ;;
-        *Fedora*) fedpkg_install ;;
-        *CentOS*) centpkg_install ;;
-        *Arch*) archpkg_install ;;
+        *Debian*|*Ubuntu*) sudo apt install -y $DEB_PKG || handle_error $PKG_FAIL 
+        ;;
+        *Fedora*) sudo dnf install -y $RHL_PKG || handle_error $PKG_FAIL 
+        ;;
+        *CentOS*) sudo yum install -y $RHL_PKG || handle_error $PKG_FAIL 
+        ;;
+        *Arch*) sudo pacman -S --noconfirm --needed $ARCH_PKG || handle_error $PKG_FAIL 
+        ;;
         *) handle_error "Unsupported Linux distribution."
+        ;;
     esac
 )
 # Clone repository and install btrfs-list
@@ -90,8 +83,8 @@ neovim_config_install()
     fi
 }
 # Execute the script
-check_commands git sudo
+check_tool git sudo
 distro_detect
-distro_commands
+pkg_install
 btrfs_list_install
 neovim_config_install
