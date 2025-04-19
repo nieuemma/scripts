@@ -6,6 +6,16 @@ DEB_PKG="gnome-shell nautilus epiphany-browser gnome-terminal gnome-control-cent
 RHL_PKG="gnome-shell nautilus epiphany gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm NetworkManager network-manager-applet btrfs-progs neovim"
 ARCH_PKG="gnome-shell nautilus epiphany gnome-console gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm networkmanager nm-connection-editor btrfs-progs neovim"
 
+# Check that required tools are installed
+check_commands() {
+    for tool in "$@"; do
+        if ! command -v "$tool" &> /dev/null; then
+            echo "Error: $tool is not installed or not in PATH."
+            exit 1
+        fi
+    done
+}
+
 # Detect the active Linux distro
 distro_detect() {
     if [ -f /etc/os-release ]; then
@@ -47,7 +57,8 @@ distro_commands() {
     esac
     [ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || (cd ~/.config && git clone https://github.com/nieuemma/nvim.git)
 }
-
+# Finally, perform functions and delete the script when finished
+check_commands git sudo
 distro_detect
 distro_commands
 rm $0
