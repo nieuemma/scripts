@@ -1,7 +1,7 @@
 #!/bin/bash
 # Log script output to a file
 output_log() {
-    exec > "$(dirname "$0")/setup.log" 2>&1
+    exec > >(tee -a "$(dirname "$0")/setup.log" | awk '{ print strftime("%Y-%m-%d %H:%M:%S"), $0 }') 2>&1
 }
 # Set error handling
 handle_error() {
