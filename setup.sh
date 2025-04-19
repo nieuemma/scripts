@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Log script output to a file
 output_log() {
     exec > >(tee -a "$(dirname "$0")/setup.log" | awk '{ print strftime("%Y-%m-%d %H:%M:%S"), $0 }') 2>&1
@@ -48,13 +48,13 @@ distro_detect() {
 # Install packages for each distro
 pkg_install() {
     case "$distro" in
-        *Debian*|*Ubuntu*) sudo apt install -y $DEB_PKG || handle_error $PKG_FAIL 
+        *Debian*|*Ubuntu*) sudo apt install -y "$DEB_PKG" || handle_error "$PKG_FAIL" 
         ;;
-        *Fedora*) sudo dnf install -y $RHL_PKG || handle_error $PKG_FAIL 
+        *Fedora*) sudo dnf install -y "$RHL_PKG" || handle_error "$PKG_FAIL" 
         ;;
-        *CentOS*) sudo yum install -y $RHL_PKG || handle_error $PKG_FAIL 
+        *CentOS*) sudo yum install -y "$RHL_PKG" || handle_error "$PKG_FAIL" 
         ;;
-        *Arch*) sudo pacman -S --noconfirm --needed $ARCH_PKG || handle_error $PKG_FAIL 
+        *Arch*) sudo pacman -S --noconfirm --needed "$ARCH_PKG" || handle_error "$PKG_FAIL" 
         ;;
     esac
 }
@@ -74,7 +74,7 @@ btrfs_list_install() {
     fi
 }
 # Clone neovim config if not already present (all distros)
-nvim_config_install()
+nvim_config_install() {
     if [ -d ~/.config/nvim ]; then
         handle_error "A neovim configuration already exists."
     else
@@ -84,7 +84,7 @@ nvim_config_install()
     fi
 }
 # Execute the script
-check_tool git sudo
+check_tool git sudo awk tee
 distro_detect
 pkg_install
 btrfs_list_install
