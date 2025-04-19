@@ -1,24 +1,23 @@
 #!/bin/bash
-
 # Log script output to a file
-exec > "$(dirname "$0")/setup.log" 2>&1
-
-# Load configuration file
-if [ -f "$(dirname "$0")/setup.conf" ]; then
-    source "$(dirname "$0")/setup.conf"
-else
-    handle_error "Configuration file not found."
-fi
-
+output_log() {
+    exec > "$(dirname "$0")/setup.log" 2>&1
+}
 # Set error handling
 handle_error() {
     echo "Error: $1" >&2
     echo "Check the setup.log for more details." >&2
     exit 1
 }
-
 PKG_FAIL="Failed to install packages."
-
+# Load configuration file
+conf_source() { 
+    if [ -f "$(dirname "$0")/setup.conf" ]; then
+        source "$(dirname "$0")/setup.conf"
+    else
+        handle_error "Configuration file not found."
+    fi
+}
 # Check that required tools are installed
 check_tool() {
     for tool in "$@"; do
@@ -27,7 +26,6 @@ check_tool() {
         fi
     done
 }
-
 # Detect the active Linux distro
 distro_detect() {
     if [ -f /etc/os-release ]; then
@@ -62,24 +60,27 @@ pkg_install() {
 )
 # Clone repository and install btrfs-list
 btrfs_list_install() {
-    if ! git clone https://github.com/speed47/btrfs-list/ ./btrfs-list; then
-        echo "Failed to clone repo speed47/btrfs-list."
-        exit 1
-    else
-        cd btrfs-list
-        sudo mv btrfs-list /bin/btrfs-list
-        cd ..
-        rm -rf "$(dirname "$0")/btrfs-list"
+    if [ -f /bin/btrfs-list ]; then
+        handle_error "btrfs-list is already installed."
+    else 
+        if ! git clone https://github.com/speed47/btrfs-list/ ./btrfs-list; then
+        handle_error "Failed to clone repo speed47/btrfs-list."
+            exit 1
+        else
+            cd btrfs-list
+            sudo mv btrfs-list /bin/btrfs-list
+            cd ..
+            rm -rf "$(dirname "$0")/btrfs-list"
+        fi
     fi
 }
 # Clone neovim config if not already present (all distros)
-neovim_config_install()
+nvim_config_install()
     if [ -d ~/.config/nvim ]; then
-        echo "A neovim configuration already exists."
+        handle_error "A neovim configuration already exists."
     else
         if ! git clone https://github.com/nieuemma/nvim.git ~/.config/nvim; then
-            echo "Failed to clone repo nieuemma/nvim."
-            exit 1
+            handle_error "Failed to clone repo nieuemma/nvim."
         fi
     fi
 }
@@ -88,4 +89,4 @@ check_tool git sudo
 distro_detect
 pkg_install
 btrfs_list_install
-neovim_config_install
+nvim_config_install
