@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Log script output to a file
+exec > "$(dirname "$0")/output.log" 2>&1
+
 # Define package variables
 DEB_PKG="gnome-shell nautilus epiphany-browser gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm3 network-manager network-manager-gnome btrfs-progs neovim"
 RHL_PKG="gnome-shell nautilus epiphany gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm NetworkManager network-manager-applet btrfs-progs neovim"
