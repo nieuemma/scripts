@@ -7,6 +7,7 @@ output_log() {
 handle_error() {
     echo "Error: $1" >&2
     echo "Check the setup.log for more details." >&2
+    exit 1 
 }
 PKG_FAIL="Failed to install packages."
 # Load configuration file
@@ -15,7 +16,6 @@ conf_source() {
         source "$(dirname "$0")/setup.conf"
     else
         handle_error "Configuration file not found."
-        exit 1
     fi
 }
 # Check that required tools are installed
@@ -23,7 +23,6 @@ check_tool() {
     for tool in "$@"; do
         if ! command -v "$tool" &> /dev/null; then
             handle_error "$tool is not installed or not in PATH."
-            exit 1
         fi
     done
 }
@@ -41,7 +40,6 @@ distro_detect() {
         distro="$(head -n 1 /etc/issue)"
     else
         handle_error "Unable to detect the active Linux distribution."
-        exit 1
     fi
     echo "Detected Linux distribution: $distro"
 }
