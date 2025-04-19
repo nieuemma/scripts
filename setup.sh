@@ -66,10 +66,10 @@ pkg_install() {
 btrfs_list_install() {
     echo "Installing btrfs-list"
     if [ -f /bin/btrfs-list ]; then
-        handle_error "btrfs-list is already installed."
+        echo "btrfs-list is already installed."
     else 
         if ! git clone https://github.com/speed47/btrfs-list/ ./btrfs-list; then
-        handle_error "Failed to clone repo speed47/btrfs-list."
+        echo "Failed to clone repo speed47/btrfs-list."
         else
             cd btrfs-list
             sudo mv btrfs-list /bin/btrfs-list
@@ -82,10 +82,10 @@ btrfs_list_install() {
 nvim_config_install() {
     echo "Cloning neovim configuration"
     if [ -d ~/.config/nvim ]; then
-        handle_error "A neovim configuration already exists."
+        echo "A neovim configuration already exists."
     else
         if ! git clone https://github.com/nieuemma/nvim.git ~/.config/nvim; then
-            handle_error "Failed to clone repo nieuemma/nvim."
+            echo "Failed to clone repo nieuemma/nvim."
         fi
     fi
 }
