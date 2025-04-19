@@ -56,7 +56,7 @@ distro_commands() {
             fi
             ;;
         *Arch*)
-            if ! sudo pacman -S --noconfirm --needed $ARCH_PKG
+            if ! sudo pacman -S --noconfirm --needed $ARCH_PKG; then
                 echo "$PKG_FAIL"
                 exit 1
             fi
