@@ -7,7 +7,7 @@ output_log() {
 handle_error() {
 PKG_FAIL="Failed to install packages."
     echo "Error: $1" >&2
-    echo "Check the setup.log for more details." >&2
+    echo "Check the setup.log to review this output." >&2
     exit 1 
 }
 
