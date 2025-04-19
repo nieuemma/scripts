@@ -81,4 +81,3 @@ distro_commands() {
 check_commands git sudo
 distro_detect
 distro_commands
-rm $0
