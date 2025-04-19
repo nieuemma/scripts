@@ -31,9 +31,9 @@ distro_commands() {
             ;;
         *"Arch Linux"*)
             sudo pacman -S --noconfirm --needed gnome-shell nautilus epiphany gnome-console gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm networkmanager nm-connection-editor baobab gnome-disk-utility gnome-text-editor gnome-system-monitor loupe totem decibels guake neovim btrfs-progs timeshift
-            [ -f /bin/btrfs-list ] && echo "btrfs-list is already installed." || (git clone https://aur.archlinux.org/btrfs-list.git && cd btrfs-list && makepkg -s --install --noconfirm *.zst && cd .. && rm -rf btrfs-list
+            [ -f /bin/btrfs-list ] && echo "btrfs-list is already installed." || (git clone https://aur.archlinux.org/btrfs-list.git && cd btrfs-list && makepkg -s --install --noconfirm *.zst && cd .. && rm -rf btrfs-list)
             ;;
-        Unknown*)
+        *Unknown*)
             echo "No commands for this distribution."
             ;;
     esac
