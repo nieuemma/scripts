@@ -5,7 +5,7 @@ output_log() {
 }
 # Set error handling
 handle_error() {
-PKG_FAIL="Failed to install packages."
+
     echo "Error: $1" >&2
     echo "Check the setup.log to review this output." >&2
     exit 1 
@@ -13,7 +13,6 @@ PKG_FAIL="Failed to install packages."
 
 # Load configuration file
 conf_load() { 
-CONF_FILE="$(dirname "$0")/setup.conf"
     echo "Loading $CONF_FILE"
     if [ -f "$CONF_FILE" ]; then
         . "$CONF_FILE"
@@ -89,6 +88,12 @@ nvim_config_install() {
         fi
     fi
 }
+# Define variables
+DEB_PKG="gnome-shell nautilus epiphany-browser gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm3 network-manager network-manager-gnome btrfs-progs neovim"
+RHL_PKG="gnome-shell nautilus epiphany gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm NetworkManager network-manager-applet btrfs-progs neovim"
+ARCH_PKG="gnome-shell nautilus epiphany gnome-console gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm networkmanager nm-connection-editor btrfs-progs neovim"
+PKG_FAIL="Failed to install packages."
+CONF_FILE="$(dirname "$0")/setup.conf"
 # Execute the script
 output_log
 conf_load
