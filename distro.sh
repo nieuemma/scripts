@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Define packages to install
+# Define package variables
 DEB_PKG="gnome-shell nautilus epiphany-browser gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm3 network-manager network-manager-gnome btrfs-progs neovim"
 RHL_PKG="gnome-shell nautilus epiphany gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm NetworkManager network-manager-applet btrfs-progs neovim"
 ARCH_PKG="gnome-shell nautilus epiphany gnome-console gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm networkmanager nm-connection-editor btrfs-progs neovim"
-
+PKG_FAIL="Failed to install packages."
 # Check that required tools are installed
 check_commands() {
     for tool in "$@"; do
@@ -28,32 +28,54 @@ distro_detect() {
     elif [ -f /etc/issue ]; then
         distro="$(head -n 1 /etc/issue)"
     else
-        echo "Could not detect the Linux distribution. Unknown or unsupported system."
+        echo "Unable to detect the active Linux distribution. Unknown or unsupported system."
         distro="Unknown"
     fi
+    echo "Detected Linux distribution: $distro"
 }
 
 # Install commands based on active Linux distro
 distro_commands() {
     case "$distro" in
         *Debian*|*Ubuntu*)
-            sudo apt install -y $DEB_PKG
+            if ! sudo apt install -y $DEB_PKG; then
+                echo "$PKG_FAIL"
+                exit 1
+            fi
             ;;
         *Fedora*)
-            sudo dnf install -y $RHL_PKG
+            if ! sudo dnf install -y $RHL_PKG; then
+                echo "$PKG_FAIL"
+                exit 1
+            fi
             ;;
         *CentOS*)
-            sudo yum install -y $RHL_PKG
+            if ! sudo yum install -y $RHL_PKG; then
+                echo "$PKG_FAIL"
+                exit 1
+            fi
             ;;
         *Arch*)
-            sudo pacman -S --noconfirm --needed $ARCH_PKG
+            if ! sudo pacman -S --noconfirm --needed $ARCH_PKG
+                echo "$PKG_FAIL"
+                exit 1
+            fi
             ;;
         *Unknown*)
             exit 1
             return
             ;;
     esac
-    [ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || (cd ~/.config && git clone https://github.com/nieuemma/nvim.git)
+       
+# Clone neovim config if not already present (all distros)
+    if [ -d ~/.config/nvim ]; then
+        echo "A neovim configuration already exists."
+    else
+        if ! git clone https://github.com/nieuemma/nvim.git ~/.config/nvim; then
+            echo "Failed to clone repo nieuemma/nvim."
+            exit 1
+        fi
+    fi
 }
 # Finally, perform functions and delete the script when finished
 check_commands git sudo
