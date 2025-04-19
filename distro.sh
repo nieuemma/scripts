@@ -1,5 +1,6 @@
 #!/bin/bash
 
+nvim_script="[ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || (cd ~/.config && git clone https://github.com/nieuemma/nvim.git)"
 # Function to detect the Linux distribution
 distro_detect() {
     if [ -f /etc/os-release ]; then
@@ -23,22 +24,22 @@ distro_commands() {
     case "$distro" in
         *Debian*|*Ubuntu*)
             sudo apt install -y gnome-shell nautilus epiphany-browser gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm3 network-manager network-manager-gnome btrfs-progs neovim
-            [ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || (cd ~/.config && git clone https://github.com/nieuemma/nvim.git)
+            $nvim_script
             ;;
         *Fedora*)
             sudo dnf install -y gnome-shell nautilus epiphany gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm NetworkManager network-manager-applet btrfs-progs neovim
-            [ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || (cd ~/.config && git clone https://github.com/nieuemma/nvim.git)
+            $nvim_script
             ;;
         *CentOS*)
             sudo yum install -y gnome-shell nautilus epiphany gnome-terminal gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm NetworkManager network-manager-applet btrfs-progs neovim
-            [ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || (cd ~/.config && git clone https://github.com/nieuemma/nvim.git)
+            $nvim_script
             ;;
         *"Arch Linux"*)
             sudo pacman -S --noconfirm --needed gnome-shell nautilus epiphany gnome-console gnome-control-center gnome-tweaks gnome-keyring xdg-user-dirs gdm networkmanager nm-connection-editor baobab gnome-disk-utility gnome-text-editor gnome-system-monitor loupe totem decibels guake neovim btrfs-progs timeshift
             [ -f /bin/btrfs-list ] && echo "btrfs-list is already installed." || (git clone https://aur.archlinux.org/btrfs-list.git && cd btrfs-list && makepkg -s --install --noconfirm *.zst && cd .. && rm -rf btrfs-list)
-            [ -d ~/.config/nvim ] && echo "A neovim configuration already exists." || (cd ~/.config && git clone https://github.com/nieuemma/nvim.git)
+            $nvim_script
             ;;
-        *)
+        Unknown*)
             echo "No commands for this distribution."
             ;;
     esac
