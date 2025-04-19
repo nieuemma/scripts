@@ -10,7 +10,11 @@ else
     echo "Configuration file not found."
 fi
 
-# Set package fail message
+# Set error handling
+handle_error() {
+    echo "Error: $1"
+    exit 1
+}
 PKG_FAIL="Failed to install packages."
 
 # Check that required tools are installed
@@ -36,8 +40,7 @@ distro_detect() {
     elif [ -f /etc/issue ]; then
         distro="$(head -n 1 /etc/issue)"
     else
-        echo "Unable to detect the active Linux distribution. Unknown or unsupported system."
-        distro="Unknown"
+        handle_error "Unable to detect the active Linux distribution. Unknown or unsupported system."
     fi
     echo "Detected Linux distribution: $distro"
 }
@@ -47,34 +50,28 @@ distro_commands() {
     case "$distro" in
         *Debian*|*Ubuntu*)
             if ! sudo apt install -y $DEB_PKG; then
-                echo "$PKG_FAIL"
-                exit 1
+                handle_error $PKG_FAIL
             fi
             ;;
         *Fedora*)
             if ! sudo dnf install -y $RHL_PKG; then
-                echo "$PKG_FAIL"
-                exit 1
+                handle_error $PKG_FAIL
             fi
             ;;
         *CentOS*)
             if ! sudo yum install -y $RHL_PKG; then
-                echo "$PKG_FAIL"
-                exit 1
+                handle_error $PKG_FAIL
             fi
             ;;
         *Arch*)
             if ! sudo pacman -S --noconfirm --needed $ARCH_PKG; then
-                echo "$PKG_FAIL"
-                exit 1
+                handle_error $PKG_FAIL
             fi
             ;;
-        *Unknown*)
-            exit 1
-            return
-            ;;
     esac
+)
 # Clone repository and install btrfs-list
+btrfs_list_install() {
     if ! git clone https://github.com/speed47/btrfs-list/ ./btrfs-list; then
         echo "Failed to clone repo speed47/btrfs-list."
         exit 1
@@ -84,7 +81,9 @@ distro_commands() {
         cd ..
         rm -rf "$(dirname "$0")/btrfs-list"
     fi
+}
 # Clone neovim config if not already present (all distros)
+neovim_config_install()
     if [ -d ~/.config/nvim ]; then
         echo "A neovim configuration already exists."
     else
@@ -99,3 +98,5 @@ distro_commands() {
 check_commands git sudo
 distro_detect
 distro_commands
+btrfs_list_install
+neovim_config_install
