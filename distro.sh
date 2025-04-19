@@ -69,7 +69,6 @@ distro_commands() {
             return
             ;;
     esac
-       
 # Clone neovim config if not already present (all distros)
     if [ -d ~/.config/nvim ]; then
         echo "A neovim configuration already exists."
@@ -80,7 +79,8 @@ distro_commands() {
         fi
     fi
 }
-# Finally, perform functions and delete the script when finished
+
+# Execute the script
 check_commands git sudo
 distro_detect
 distro_commands
