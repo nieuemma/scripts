@@ -52,13 +52,13 @@ distro_detect() {
 pkg_install() {
     echo "Installing packages"
     case "$distro" in
-        *Debian*|*Ubuntu*) sudo apt install -y "$DEB_PKG" || handle_error "$PKG_FAIL" 
+        *Debian*|*Ubuntu*) sudo apt install -y $DEB_PKG || handle_error $PKG_FAIL
         ;;
-        *Fedora*) sudo dnf install -y "$RHL_PKG" || handle_error "$PKG_FAIL" 
+        *Fedora*) sudo dnf install -y $RHL_PKG || handle_error $PKG_FAIL
         ;;
-        *CentOS*) sudo yum install -y "$RHL_PKG" || handle_error "$PKG_FAIL" 
+        *CentOS*) sudo yum install -y $RHL_PKG || handle_error $PKG_FAIL
         ;;
-        *Arch*) sudo pacman -S --noconfirm --needed "$ARCH_PKG" || handle_error "$PKG_FAIL" 
+        *Arch*) sudo pacman -S --noconfirm --needed $ARCH_PKG || handle_error $PKG_FAIL
         ;;
     esac
 }
